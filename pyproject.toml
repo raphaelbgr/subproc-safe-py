@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "subproc-safe"
+version = "0.1.0"
+description = "Safe subprocess wrapper with timeouts, tree-kill, TTL cache, single-flight, GPU query, and leak reporting."
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [{name = "Raphael Rocha"}]
+dependencies = [
+    "psutil>=5.9",
+    "requests>=2.28",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=7", "pynvml>=11"]
+gpu = ["pynvml>=11"]
+
+[tool.setuptools.packages.find]
+include = ["subproc_safe*"]
