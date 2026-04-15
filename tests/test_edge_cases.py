@@ -96,17 +96,6 @@ def test_env_respected():
 #    All must raise; only ONE subprocess should have been spawned.
 # ---------------------------------------------------------------------------
 
-@pytest.mark.xfail(
-    reason=(
-        "impl bug: _cache.run_cached() acquires entry.lock, calls run() which raises "
-        "CalledProcessError, then exits the lock-body with no value stored. The next "
-        "waiter re-acquires the lock and re-spawns the process. All 5 concurrent "
-        "callers therefore spawn their own subprocess (5 invocations instead of 1). "
-        "Fix: catch the exception inside the lock, store a sentinel error, and re-raise "
-        "it to all waiters without re-spawning."
-    ),
-    strict=False,
-)
 def test_single_flight_exception_propagation():
     with tempfile.TemporaryDirectory() as d:
         cpath = os.path.join(d, "invocation_count")
