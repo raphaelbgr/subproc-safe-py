@@ -17,6 +17,7 @@ dependencies = [
 [project.optional-dependencies]
 test = ["pytest>=7", "pynvml>=11"]
 gpu = ["pynvml>=11"]
+dev = ["build", "twine"]
 
 [tool.setuptools.packages.find]
 include = ["subproc_safe*"]

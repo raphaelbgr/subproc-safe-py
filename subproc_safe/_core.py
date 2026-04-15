@@ -12,6 +12,20 @@ import psutil
 
 _SENTINEL = object()
 
+# Rule 2: on Windows, any child spawned from pythonw.exe or a headless parent
+# can still flash a console. CREATE_NO_WINDOW + STARTUPINFO(SW_HIDE) suppresses
+# that for every child; no-op on POSIX.
+_WIN_CREATE_NO_WINDOW = 0x08000000
+
+
+def _win_silent_kwargs() -> dict:
+    if sys.platform != "win32":
+        return {}
+    si = subprocess.STARTUPINFO()  # type: ignore[attr-defined]
+    si.dwFlags |= subprocess.STARTF_USESHOWWINDOW  # type: ignore[attr-defined]
+    si.wShowWindow = 0  # SW_HIDE
+    return {"creationflags": _WIN_CREATE_NO_WINDOW, "startupinfo": si}
+
 
 class TimeoutError(Exception):
     """Raised when a subprocess exceeds its timeout and has been tree-killed."""
@@ -91,6 +105,7 @@ def run(
         stderr=stderr,
         text=True,
         shell=False,
+        **_win_silent_kwargs(),
     )
     try:
         out, err = proc.communicate(timeout=timeout)
