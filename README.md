@@ -9,6 +9,14 @@ pip install subproc-safe           # core
 pip install 'subproc-safe[gpu]'    # + pynvml for gpu_query()
 ```
 
+### Install via git URL (no PyPI account required)
+
+Not published to PyPI. Pin to a git tag for reproducibility.
+
+```
+pip install "subproc-safe @ git+https://github.com/raphaelbgr/subproc-safe-py.git@v0.1.1"
+```
+
 ## Usage
 
 ```python
